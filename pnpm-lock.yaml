@@ -9,32 +9,32 @@ importers:
   .:
     dependencies:
       pinia:
-        specifier: ^2.1.7
+        specifier: ^2.2.4
         version: 2.2.4(typescript@5.3.3)(vue@3.5.12(typescript@5.3.3))
       vue:
         specifier: ^3.5.12
         version: 3.5.12(typescript@5.3.3)
       vue-router:
-        specifier: ^4.2.5
+        specifier: ^4.4.5
         version: 4.4.5(vue@3.5.12(typescript@5.3.3))
     devDependencies:
       '@antfu/eslint-config':
-        specifier: ^2.6.4
+        specifier: ^2.27.3
         version: 2.27.3(@typescript-eslint/utils@8.8.1(eslint-ts-patch@8.56.0-0)(typescript@5.3.3))(@vue/compiler-sfc@3.5.12)(eslint-ts-patch@8.56.0-0)(typescript@5.3.3)
       '@faker-js/faker':
         specifier: ^9.0.3
         version: 9.0.3
       '@tsconfig/node20':
-        specifier: ^20.1.2
+        specifier: ^20.1.4
         version: 20.1.4
       '@types/lodash-es':
         specifier: ^4.17.12
         version: 4.17.12
       '@types/node':
-        specifier: ^20.11.10
+        specifier: ^20.16.11
         version: 20.16.11
       '@vitejs/plugin-vue':
-        specifier: ^5.0.3
+        specifier: ^5.1.4
         version: 5.1.4(vite@5.4.8(@types/node@20.16.11))(vue@3.5.12(typescript@5.3.3))
       '@vitejs/plugin-vue-jsx':
         specifier: ^3.1.0
@@ -43,7 +43,7 @@ importers:
         specifier: ^0.5.1
         version: 0.5.1
       autoprefixer:
-        specifier: ^10.4.17
+        specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.47)
       eslint:
         specifier: npm:eslint-ts-patch@8.56.0-0
@@ -55,22 +55,22 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       npm-run-all2:
-        specifier: ^6.1.1
+        specifier: ^6.2.3
         version: 6.2.3
       postcss:
-        specifier: ^8.4.35
+        specifier: ^8.4.47
         version: 8.4.47
       tailwindcss:
-        specifier: ^3.4.1
+        specifier: ^3.4.13
         version: 3.4.13
       typescript:
-        specifier: ~5.3.0
+        specifier: ~5.3.3
         version: 5.3.3
       unplugin-vue-components:
         specifier: ^0.26.0
         version: 0.26.0(@babel/parser@7.25.8)(rollup@4.24.0)(vue@3.5.12(typescript@5.3.3))
       vite:
-        specifier: ^5.0.11
+        specifier: ^5.4.8
         version: 5.4.8(@types/node@20.16.11)
       vue-tsc:
         specifier: ^1.8.27
