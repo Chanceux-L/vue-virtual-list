@@ -10,6 +10,7 @@ export default antfu(
       'dist/*',
       'node_modules/*',
       '*.d.ts',
+      '*.md',
     ],
   },
   {
