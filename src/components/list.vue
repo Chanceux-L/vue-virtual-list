@@ -89,7 +89,7 @@ function computedVisualSize() {
     const id = item.id;
     const dataIndex = itemPositions.value.findIndex((pos) => {
       const key = props.keyField as keyof UnwrapRef<T>;
-      return +pos.data[key] === +id;
+      return String(pos.data[key]) === String(id);
     });
 
     if (dataIndex !== -1) {
