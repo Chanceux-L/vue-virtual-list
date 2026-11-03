@@ -1,7 +1,7 @@
 <script setup lang='ts' generic="T">
 import type { UnwrapRef } from 'vue';
 import type { Emits, Props, VirtualListInstance } from './types';
-import { cloneDeep, throttle } from 'lodash-es';
+import { throttle } from 'lodash-es';
 import { computed, nextTick, onUpdated, ref, watch } from 'vue';
 
 const props = withDefaults(defineProps<Props<T>>(), {
@@ -335,10 +335,11 @@ async function init() {
   // emitArrived();
 }
 
-let oldListData: T[] = [];
 async function onListDataLengthChange() {
   const keyField = props.keyField as keyof T;
-  const oldFirstVisibleItem = oldListData[oldScrollInfo.value.firstVisibleItemIndex];
+  // itemPositions 此刻仍是变更前列表的快照，且与 firstVisibleItemIndex 处于同一索引空间，
+  // 直接取旧的第一个可视项即可，无需深拷贝整个 listData
+  const oldFirstVisibleItem = itemPositions.value[oldScrollInfo.value.firstVisibleItemIndex]?.data as T | undefined;
 
   // 保存旧的位置信息，用于后续更新新增项的高度
   const oldPositions = new Map(
@@ -348,7 +349,6 @@ async function onListDataLengthChange() {
     ]),
   );
 
-  oldListData = cloneDeep(props.listData);
   await nextTick();
 
   if (!isInitialized.value) {
