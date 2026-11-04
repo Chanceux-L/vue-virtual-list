@@ -1,7 +1,6 @@
 <script setup lang='ts' generic="T">
 import type { UnwrapRef } from 'vue';
-import type { Emits, Props, VirtualListInstance } from './types';
-import { throttle } from 'lodash-es';
+import type { Emits, Props } from './types';
 import { computed, nextTick, onUpdated, ref, watch } from 'vue';
 
 const props = withDefaults(defineProps<Props<T>>(), {
@@ -177,6 +176,40 @@ const oldScrollInfo = ref({
   offset: 0,
 });
 
+// 节流：语义对齐 lodash throttle 默认行为（leading + trailing，trailing 携带最新参数，每个窗口至多执行一次）
+function throttle<Args extends unknown[]>(fn: (...args: Args) => void, wait = 100) {
+  let lastInvokeTime = 0;
+  let timer: ReturnType<typeof setTimeout> | null = null;
+  let pendingArgs: Args | null = null;
+
+  const invoke = (args: Args) => {
+    lastInvokeTime = Date.now();
+    fn(...args);
+  };
+
+  return (...args: Args) => {
+    const remaining = wait - (Date.now() - lastInvokeTime);
+    if (remaining <= 0) {
+      if (timer) {
+        clearTimeout(timer);
+        timer = null;
+      }
+      invoke(args);
+    } else {
+      pendingArgs = args;
+      if (!timer) {
+        timer = setTimeout(() => {
+          timer = null;
+          if (pendingArgs) {
+            invoke(pendingArgs);
+            pendingArgs = null;
+          }
+        }, remaining);
+      }
+    }
+  };
+}
+
 const onScroll = throttle((e: Event) => {
   const scrollTop = (e.target as HTMLElement).scrollTop;
   // 保存滚动信息
@@ -209,7 +242,7 @@ onUpdated(throttle(() => {
 // 滚动到底部
 async function scrollToBottom(smooth: boolean = true): Promise<void> {
   if (containerRef.value) {
-    endIndex.value = props.listData.length - 1;
+    endIndex.value = props.listData.length;
     computedVisualSize();
     await nextTick();
     await waitForItemsToRender();
@@ -275,15 +308,11 @@ async function scrollToItem(options: { key: T[keyof T]; align?: Props<T>['itemAl
 
   // 确保 scrollTop 在有效范围内
   scrollTop = Math.max(0, Math.min(scrollTop, maxScrollTop));
-  scrollToPosition({ top: scrollTop, align, smooth });
+  scrollToPosition({ top: scrollTop, smooth });
 }
 
 // 滚动到指定位置
-function scrollToPosition(options: {
-  top: number;
-  align?: Props<T>['itemAlign'];
-  smooth?: boolean;
-}) {
+function scrollToPosition(options: { top: number; smooth?: boolean }) {
   const { top, smooth = false } = options;
 
   if (!containerRef.value) { return; }
@@ -297,7 +326,7 @@ async function init() {
 
   // STEP2: 先渲染完整列表以获取正确的高度信息
   startIndex.value = 0;
-  endIndex.value = props.listData.length - 1;
+  endIndex.value = props.listData.length;
 
   // STEP3: 初始化子项位置集合
   itemPositions.value = props.listData.map((_, index) => ({
@@ -397,7 +426,7 @@ async function onListDataLengthChange() {
 }
 watch(() => props.listData.length, onListDataLengthChange, { immediate: true });
 
-defineExpose<VirtualListInstance<T>>({
+defineExpose({
   scrollToTop,
   scrollToItem,
   scrollToBottom,

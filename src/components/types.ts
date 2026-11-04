@@ -1,5 +1,3 @@
-import type { Ref } from 'vue';
-
 export type ItemAlign = 'top' | 'bottom' | 'center';
 
 export interface Props<T> {
@@ -22,6 +20,7 @@ export interface VirtualListInstance<T> {
   scrollToTop: (smooth?: boolean) => Promise<void>;
   scrollToItem: (options: { key: T[keyof T]; align?: ItemAlign; smooth?: boolean }) => Promise<void>;
   scrollToBottom: (smooth?: boolean) => Promise<void>;
-  isTopArrived: Ref<boolean>;
-  isBottomArrived: Ref<boolean>;
+  // defineExpose 暴露的 ref 会被 proxyRefs 自动解包，实例上读取到的即布尔值
+  isTopArrived: boolean;
+  isBottomArrived: boolean;
 }
