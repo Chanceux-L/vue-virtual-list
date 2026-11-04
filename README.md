@@ -2,6 +2,8 @@
 
 一个基于 Vue 3 的高性能虚拟列表组件，支持动态高度、缓冲区优化和灵活的滚动控制。
 
+**[在线演示](https://chanceux-l.github.io/vue-virtual-list/)**
+
 ## ✨ 特性
 
 - 🚀 **高性能渲染** - 仅渲染可视区域的元素，支持海量数据列表
@@ -12,7 +14,14 @@
 - 💪 **TypeScript** - 完整的类型支持
 - 🎨 **灵活定制** - 通过插槽自定义列表项渲染
 
+## 🧭 环境要求
+
+- 本组件为 **Vue 3 专用**组件，不支持 Vue 2
+- 需要宿主项目已安装 Vue `>= 3.3`（peer 依赖）
+
 ## 📦 安装
+
+本组件将 Vue 作为 peer 依赖，请确保宿主项目已安装 Vue 3（`>= 3.3`）：
 
 ```bash
 npm install @chanceux/vue-virtual-list
@@ -48,18 +57,21 @@ const listData = ref<Item[]>(
 </script>
 
 <template>
-  <VirtualList
-    :list-data="listData"
-    :estimate-item-height="60"
-    :buffer-ratio="1"
-    key-field="id"
-  >
-    <template #default="{ item, index }">
-      <div class="list-item">
-        {{ index }}: {{ item.name }}
-      </div>
-    </template>
-  </VirtualList>
+  <!-- 组件根元素高度为 100%，父容器必须有确定高度，否则列表不可见 -->
+  <div style="height: 500px">
+    <VirtualList
+      :list-data="listData"
+      :estimate-item-height="60"
+      :buffer-ratio="1"
+      key-field="id"
+    >
+      <template #default="{ item, index }">
+        <div class="list-item">
+          {{ index }}: {{ item.name }}
+        </div>
+      </template>
+    </VirtualList>
+  </div>
 </template>
 
 <style scoped>
@@ -131,10 +143,10 @@ const handleBottomArrived = () => {
   // 可以在这里加载更多数据
 }
 
-// 通过 ref 访问状态
+// 通过 ref 访问状态（暴露的 ref 已被自动解包，直接读取即可，无需 .value）
 const checkStatus = () => {
-  console.log('是否在顶部：', virtualListRef.value?.isTopArrived.value)
-  console.log('是否在底部：', virtualListRef.value?.isBottomArrived.value)
+  console.log('是否在顶部：', virtualListRef.value?.isTopArrived)
+  console.log('是否在底部：', virtualListRef.value?.isBottomArrived)
 }
 </script>
 
@@ -169,6 +181,8 @@ const checkStatus = () => {
 | `topThreshold` | `number` | `50` | 触发顶部到达事件的阈值（px） |
 | `bottomThreshold` | `number` | `50` | 触发底部到达事件的阈值（px） |
 
+> ⚠️ 组件根元素的高度为 `100%`，父容器必须有确定的高度（固定高度，或 flex 布局中的 `flex: 1` 加 `min-height: 0` 约束），否则高度将塌陷为 0，列表不可见。
+
 ### Events
 
 | 事件名 | 参数 | 说明 |
@@ -190,8 +204,8 @@ const checkStatus = () => {
 
 | 属性 | 类型 | 说明 |
 |------|------|------|
-| `isTopArrived` | `Ref<boolean>` | 是否到达顶部 |
-| `isBottomArrived` | `Ref<boolean>` | 是否到达底部 |
+| `isTopArrived` | `boolean` | 是否到达顶部 |
+| `isBottomArrived` | `boolean` | 是否到达底部 |
 
 ### Slots
 
@@ -230,6 +244,7 @@ ISC
 
 ## 🔗 链接
 
+- [在线演示](https://chanceux-l.github.io/vue-virtual-list/)
 - [GitHub](https://github.com/Chanceux-L/vue-virtual-list)
 - [NPM](https://www.npmjs.com/package/@chanceux/vue-virtual-list)
 
