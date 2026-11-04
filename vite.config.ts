@@ -7,7 +7,10 @@ export default defineConfig(() => {
   return {
     plugins: [
       vue(),
-      dts(),
+      dts({
+        entryRoot: 'src',
+        include: ['src'],
+      }),
     ],
     resolve: {
       alias: {
