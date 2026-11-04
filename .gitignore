@@ -29,3 +29,8 @@ coverage
 /components.d.ts
 
 *.tsbuildinfo
+
+# tsc build artifacts of vite.config.ts (vue-tsc -b), never commit them
+/vite.config.js
+/vite.config.d.ts
+
