@@ -133,8 +133,8 @@ const handleBottomArrived = () => {
 
 // 通过 ref 访问状态
 const checkStatus = () => {
-  console.log('是否在顶部:', virtualListRef.value?.isTopArrived.value)
-  console.log('是否在底部:', virtualListRef.value?.isBottomArrived.value)
+  console.log('是否在顶部：', virtualListRef.value?.isTopArrived.value)
+  console.log('是否在底部：', virtualListRef.value?.isBottomArrived.value)
 }
 </script>
 
